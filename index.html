@@ -2043,7 +2043,7 @@ const SYNC_KEY = 'sten_sync_cfg';
 function loadSyncConfig(){
   try{ return JSON.parse(localStorage.getItem(SYNC_KEY)||'null'); }catch(e){return null;}
 }
-function saveSyncConfig(cfg){
+function storeSyncConfig(cfg){
   localStorage.setItem(SYNC_KEY, JSON.stringify(cfg));
 }
 
@@ -2106,7 +2106,7 @@ async function saveSyncConfig_(){
 
     // Save config (passphrase NOT saved — user must re-enter each session)
     const cfg={token, gistId, lastSynced:null};
-    saveSyncConfig(cfg);
+    storeSyncConfig(cfg);
     // Cache passphrase in memory for this session only
     window._syncPass=pass;
 
@@ -2235,7 +2235,7 @@ async function syncPush(){
     if(!res.ok){const e=await res.json();throw new Error(e.message||res.status);}
 
     cfg.lastSynced=new Date().toISOString();
-    saveSyncConfig(cfg);
+    storeSyncConfig(cfg);
     refreshSyncUI();
     setSyncStatus('✓ PUSHED SUCCESSFULLY');
     toast('SYNCED TO CLOUD ↑');
@@ -2290,7 +2290,7 @@ async function syncPull(){
     syncNodes();rebuildEdges();initPulses();render();buildSidebar();
 
     cfg.lastSynced=new Date().toISOString();
-    saveSyncConfig(cfg);
+    storeSyncConfig(cfg);
     refreshSyncUI();
     setSyncStatus('✓ PULLED SUCCESSFULLY');
     toast('DATA RESTORED FROM CLOUD ↓');
